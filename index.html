@@ -6,7 +6,7 @@
   <title>Hitung Orang dari Video</title>
 </head>
 <body>
-  <h1>Fajar Location BKS </h1>
+  <h1>Hitung Orang dari Video</h1>
   <input type="file" id="videoUpload" accept="video/*"><br><br>
   <button onclick="prosesVideo()">Hitung Orang</button>
   <p id="hasil">Hasil akan muncul di sini...</p>
@@ -37,7 +37,7 @@
         document.getElementById("hasil").innerText = "Sedang memproses...";
 
         try {
-          const res = await fetch("https://detect.roboflow.com/coco-person/1?api_key=fzTX2IhhYdMbGnDVOhtM", {
+          const res = await fetch("https://detect.roboflow.com/deteksi-orang-anbqn/deteksi-orang-vxpit-instant-1?api_key=fzTX2IhhYdMbGnDVOhtM", {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
@@ -59,4 +59,4 @@
     }
   </script>
 </body>
-  </html>
+</html>
