@@ -3,39 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hitung Orang dalam Video</title>
+  <title>Hitung Orang dari Video</title>
 </head>
 <body>
-  <h1>Upload Video untuk Menghitung Orang</h1>
+  <h1>Fajar Location BKS </h1>
   <input type="file" id="videoUpload" accept="video/*"><br><br>
-  <button onclick="kirimVideo()">Hitung Orang</button>
+  <button onclick="prosesVideo()">Hitung Orang</button>
   <p id="hasil">Hasil akan muncul di sini...</p>
 
   <script>
-    async function kirimVideo() {
-      const input = document.getElementById('videoUpload');
+    async function prosesVideo() {
+      const input = document.getElementById("videoUpload");
       const file = input.files[0];
       if (!file) {
         alert("Silakan pilih video terlebih dahulu.");
         return;
       }
 
-      const formData = new FormData();
-      formData.append('video', file);
+      const video = document.createElement("video");
+      video.src = URL.createObjectURL(file);
+      video.muted = true;
+      video.currentTime = 0;
 
-      document.getElementById('hasil').innerText = 'Sedang diproses...';
+      video.onloadeddata = async () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      try {
-        const response = await fetch('https://example.com/api/detect', {
-          method: 'POST',
-          body: formData
-        });
-        const data = await response.json();
-        document.getElementById('hasil').innerText = 'Jumlah orang terdeteksi: ' + data.jumlah;
-      } catch (err) {
-        document.getElementById('hasil').innerText = 'Gagal memproses video.';
-        console.error(err);
-      }
+        const imageData = canvas.toDataURL("image/jpeg");
+
+        document.getElementById("hasil").innerText = "Sedang memproses...";
+
+        try {
+          const res = await fetch("https://detect.roboflow.com/coco-person/1?api_key=fzTX2IhhYdMbGnDVOhtM", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              image: imageData
+            })
+          });
+
+          const data = await res.json();
+          const jumlahOrang = data.predictions.filter(p => p.class === "person").length;
+
+          document.getElementById("hasil").innerText = "Jumlah orang terdeteksi: " + jumlahOrang;
+        } catch (err) {
+          document.getElementById("hasil").innerText = "Terjadi kesalahan saat memproses.";
+          console.error(err);
+        }
+      };
     }
   </script>
 </body>
