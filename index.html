@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>v2 Hitung Orang dari Video</title>
+  <title>v3 Hitung Orang dari Video</title>
 </head>
 <body>
-  <h1>v2 Hitung Orang dari Video</h1>
+  <h1>v3 Hitung Orang dari Video</h1>
   <input type="file" id="videoUpload" accept="video/*"><br><br>
   <button onclick="prosesVideo()">Hitung Orang</button>
   <p id="hasil">Hasil akan muncul di sini...</p>
@@ -37,7 +37,7 @@
         document.getElementById("hasil").innerText = "Sedang memproses...";
 
         try {
-          const res = await fetch("https://detect.roboflow.com/deteksi-orang-anbqn/deteksi-orang-vxpit-instant-2?api_key=fzTX2IhhYdMbGnDVOhtM", {
+          const res = await fetch("https://detect.roboflow.com/deteksi-orang-vxpit/5?api_key=fzTX2IhhYdMbGnDVOhtM", {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
