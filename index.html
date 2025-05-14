@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hitung Orang dalam Video</title>
+</head>
+<body>
+  <h1>Upload Video untuk Menghitung Orang</h1>
+  <input type="file" id="videoUpload" accept="video/*"><br><br>
+  <button onclick="kirimVideo()">Hitung Orang</button>
+  <p id="hasil">Hasil akan muncul di sini...</p>
+
+  <script>
+    async function kirimVideo() {
+      const input = document.getElementById('videoUpload');
+      const file = input.files[0];
+      if (!file) {
+        alert("Silakan pilih video terlebih dahulu.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('video', file);
+
+      document.getElementById('hasil').innerText = 'Sedang diproses...';
+
+      try {
+        const response = await fetch('https://example.com/api/detect', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await response.json();
+        document.getElementById('hasil').innerText = 'Jumlah orang terdeteksi: ' + data.jumlah;
+      } catch (err) {
+        document.getElementById('hasil').innerText = 'Gagal memproses video.';
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+  </html>
