@@ -48,12 +48,15 @@
           });
 
           const data = await res.json();
-          const jumlahOrang = data.predictions.filter(p => p.class === "person").length;
 
-          document.getElementById("hasil").innerText = "Jumlah orang terdeteksi: " + jumlahOrang;
+          if (data.predictions) {
+            const jumlahOrang = data.predictions.filter(p => p.class === "person").length;
+            document.getElementById("hasil").innerText = "Jumlah orang terdeteksi: " + jumlahOrang;
+          } else {
+            document.getElementById("hasil").innerText = "Gagal deteksi. Pesan dari server:\n" + JSON.stringify(data, null, 2);
+          }
         } catch (err) {
-          document.getElementById("hasil").innerText = "Terjadi kesalahan saat memproses.";
-          console.error(err);
+          document.getElementById("hasil").innerText = "Terjadi kesalahan saat memproses:\n" + err.message;
         }
       };
     }
